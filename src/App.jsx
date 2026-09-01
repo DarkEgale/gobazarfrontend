@@ -10,6 +10,7 @@ import ShopPage from "./pages/ShopPage";
 import ProductDetails from "./pages/ProductDetails";
 import CartPage from "./pages/CartPage";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
+import { Analytics } from "@vercel/analytics/react"
 
 const App = () => {
   return (
