@@ -25,7 +25,6 @@ const PAYMENT_LABELS = {
 
 const ORDERS_API = `${getApiUrl(API_ENDPOINTS.ADMIN_ORDERS)}`;
 
-
 const AdminOrders = memo(() => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -137,13 +136,13 @@ const AdminOrders = memo(() => {
                   ${order.amount.toFixed(2)}
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-400">
-                  {order.payment}
+                  {order.paymentStatus}
                 </td>
                 <td className="px-5 py-4">
                   <span
                     className={`rounded-lg px-2 py-1 text-[11px] font-semibold ring-1 ${STATUS_STYLES[order.status] || "bg-zinc-500/10 text-zinc-500 ring-zinc-500/20"}`}
                   >
-                    {STATUS_LABELS[order.status] || order.status}
+                    {STATUS_LABELS[order.orderStatus] || order.status}
                   </span>
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-500">
