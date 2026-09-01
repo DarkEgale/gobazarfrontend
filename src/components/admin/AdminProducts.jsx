@@ -33,14 +33,19 @@ const AdminProducts = memo(() => {
         notes: p.notes || "",
         delivary: p.delivary ?? "",
         paymentMethod: p.paymentMethod || "",
-        searchTags: Array.isArray(p.searchTags) ? p.searchTags.join(", ") : p.searchTags || "",
-        thumbnil: p.thumbnil || null,     // existing thumbnail URL
-        photos: p.photos || [],           // existing photo URLs
+        searchTags: Array.isArray(p.searchTags)
+          ? p.searchTags.join(", ")
+          : p.searchTags || "",
+        thumbnil: p.thumbnil || null, // existing thumbnail URL
+        photos: p.photos || [], // existing photo URLs
         image: p.thumbnil,
       }));
       setProducts(mapped);
     } catch (error) {
-      console.error("Fetch products error:", error.response?.data?.message || error.message);
+      console.error(
+        "Fetch products error:",
+        error.response?.data?.message || error.message,
+      );
       setProducts([]);
     } finally {
       setLoading(false);
@@ -59,12 +64,17 @@ const AdminProducts = memo(() => {
     async (formData) => {
       setSaving(true);
       try {
-        await axios.post(PRODUCTS_API, formData, { withCredentials: true });
+        await axios.post(getApiUrl(API_ENDPOINTS.PRODUCTS), formData, {
+          withCredentials: true,
+        });
         setShowForm(false);
         setEditingProduct(null);
         await fetchProducts();
       } catch (error) {
-        console.error("Create product error:", error.response?.data?.message || error.message);
+        console.error(
+          "Create product error:",
+          error.response?.data?.message || error.message,
+        );
         alert(error.response?.data?.message || error.message);
       } finally {
         setSaving(false);
@@ -86,7 +96,10 @@ const AdminProducts = memo(() => {
         setEditingProduct(null);
         await fetchProducts();
       } catch (error) {
-        console.error("Update product error:", error.response?.data?.message || error.message);
+        console.error(
+          "Update product error:",
+          error.response?.data?.message || error.message,
+        );
         alert(error.response?.data?.message || error.message);
       } finally {
         setSaving(false);
@@ -95,21 +108,22 @@ const AdminProducts = memo(() => {
     [editingProduct, fetchProducts],
   );
 
-  const handleDelete = useCallback(
-    async (id) => {
-      if (!window.confirm("Are you sure you want to delete this product?")) return;
-      try {
-        await axios.delete(`${getApiUrl(API_ENDPOINTS.PRODUCTS)}/${id}`, {
-          withCredentials: true,
-        });
-        setProducts((prev) => prev.filter((p) => p.id !== id));
-      } catch (error) {
-        console.error("Delete product error:", error.response?.data?.message || error.message);
-        alert(error.response?.data?.message || error.message);
-      }
-    },
-    [],
-  );
+  const handleDelete = useCallback(async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
+    try {
+      await axios.delete(`${getApiUrl(API_ENDPOINTS.PRODUCTS)}/${id}`, {
+        withCredentials: true,
+      });
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error(
+        "Delete product error:",
+        error.response?.data?.message || error.message,
+      );
+      alert(error.response?.data?.message || error.message);
+    }
+  }, []);
 
   const startEdit = (product) => {
     setEditingProduct(product);
@@ -165,7 +179,9 @@ const AdminProducts = memo(() => {
       {loading ? (
         <div className="flex items-center justify-center rounded-2xl border border-white/[0.06] bg-white/[0.03] py-16">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-500/30 border-t-violet-500" />
-          <span className="ml-3 text-sm text-zinc-500">Loading products...</span>
+          <span className="ml-3 text-sm text-zinc-500">
+            Loading products...
+          </span>
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.1] bg-white/[0.02] py-16">
