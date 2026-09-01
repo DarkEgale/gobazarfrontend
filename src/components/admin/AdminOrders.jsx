@@ -4,22 +4,26 @@ import { FiSearch, FiShoppingBag, FiEye } from "react-icons/fi";
 import { API_ENDPOINTS, getApiUrl } from "../../config/apiConfig";
 
 const STATUS_STYLES = {
-  paid: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
-  cash_on_delivery: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
+  deliverd: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
+  shipping: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
+  shipped: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
+  on_the_way: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
   pending: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
   cancelled: "bg-red-500/10 text-red-400 ring-red-500/20",
 };
 
 const STATUS_LABELS = {
-  paid: "Paid",
-  cash_on_delivery: "Cash on Delivery",
   pending: "Pending",
+  shipping: "Shipping",
+  shipped: "Shipped",
+  on_the_way: "On the Way",
+  deliverd: "Delivered",
   cancelled: "Cancelled",
 };
 
 const PAYMENT_LABELS = {
   cash: "COD",
-  bekash: "bKash",
+  bkash: "bKash",
   nagad: "Nagad",
 };
 
@@ -142,7 +146,9 @@ const AdminOrders = memo(() => {
                   <span
                     className={`rounded-lg px-2 py-1 text-[11px] font-semibold ring-1 ${STATUS_STYLES[order.status] || "bg-zinc-500/10 text-zinc-500 ring-zinc-500/20"}`}
                   >
-                    {STATUS_LABELS[order.orderStatus] || order.status}
+                    {order.orderStatus
+                      ? STATUS_LABELS[order.orderStatus]
+                      : "Unknown"}
                   </span>
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-500">
