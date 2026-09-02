@@ -141,7 +141,7 @@ const AdminCustomers = memo(() => {
                   {customer.orders}
                 </td>
                 <td className="px-5 py-4 text-sm font-semibold text-white">
-                  ${customer.spent.toFixed(2)}
+                  ৳{customer.spent.toFixed(2)}
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-500">
                   {customer.joined}

@@ -191,7 +191,7 @@ const Wishlist = memo(() => {
             {wishlist.length} item{wishlist.length > 1 ? "s" : ""} saved
           </p>
 
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
             {wishlist.map((item) => (
               <WishItem
                 key={item._id}

@@ -196,7 +196,7 @@ const AdminProducts = memo(() => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
@@ -217,7 +217,7 @@ const AdminProducts = memo(() => {
                   </p>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-sm font-bold text-white">
-                      ${product.price}
+                      ৳{product.price}
                     </span>
                     <span className="rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-emerald-500/20">
                       {product.discount > 0

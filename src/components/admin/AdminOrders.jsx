@@ -174,7 +174,7 @@ const AdminOrders = memo(() => {
                   {order.product}
                 </td>
                 <td className="px-5 py-4 text-sm font-semibold text-white">
-                  ${order.amount.toFixed(2)}
+                  ৳{order.amount.toFixed(2)}
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-400">
                   {order.paymentStatus}

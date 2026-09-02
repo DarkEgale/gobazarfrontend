@@ -14,6 +14,19 @@ const EMPTY_FORM = {
   searchTags: "",
 };
 
+// Category → Sub Category map (dropdown-এর জন্য)
+const CATEGORIES = {
+  Electronics: ["Headphones", "Smart Watch", "Camera", "Keyboard", "Speaker", "Mobile", "Laptop", "Accessories"],
+  Fashion: ["Men", "Women", "Kids", "Shoes", "Bags", "Accessories"],
+  "Home & Living": ["Furniture", "Kitchen", "Decor", "Bedding", "Lighting"],
+  Beauty: ["Skincare", "Makeup", "Hair Care", "Fragrance"],
+  Sports: ["Fitness", "Outdoor", "Cycling", "Team Sports"],
+  Books: ["Fiction", "Non-Fiction", "Academic", "Comics"],
+  Toys: ["Kids Toys", "Board Games", "Action Figures", "Puzzles"],
+  Grocery: ["Snacks", "Beverages", "Staples"],
+  Others: ["General"],
+};
+
 /**
  * ProductForm — Create + Edit দুটোই handle করে।
  *
@@ -66,6 +79,31 @@ const ProductForm = memo(({ initialData, onSubmit, onCancel, saving }) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  // Category change করলে sub category reset হবে (নতুন categoryর sub আলাদা)
+  const handleCategoryChange = (e) => {
+    const { value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      category: value,
+      subCategory: CATEGORIES[value]?.includes(prev.subCategory)
+        ? prev.subCategory
+        : "",
+    }));
+  };
+
+  // Edit mode-এ পুরনো category/sub list-এ না থাকলেও option হিসেবে দেখাবে
+  const categoryOptions = form.category && !CATEGORIES[form.category]
+    ? [...Object.keys(CATEGORIES), form.category]
+    : Object.keys(CATEGORIES);
+  const subCategoryOptions = form.category
+    ? [
+        ...(CATEGORIES[form.category] || []),
+        ...(form.subCategory && !(CATEGORIES[form.category] || []).includes(form.subCategory)
+          ? [form.subCategory]
+          : []),
+      ]
+    : [];
 
   // ---- Thumbnail handlers ----
   const handleThumbChange = (e) => {
@@ -172,16 +210,43 @@ const ProductForm = memo(({ initialData, onSubmit, onCancel, saving }) => {
 
         <div>
           <label className="mb-1.5 block text-xs font-semibold text-zinc-400">Category</label>
-          <input type="text" name="category" value={form.category} onChange={handleChange} placeholder="e.g. Electronics" className={inputClasses} />
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleCategoryChange}
+            className={inputClasses}
+          >
+            <option value="">Select category</option>
+            {categoryOptions.map((cat) => (
+              <option key={cat} value={cat} className="bg-[#0d0d12]">
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
           <label className="mb-1.5 block text-xs font-semibold text-zinc-400">Sub Category</label>
-          <input type="text" name="subCategory" value={form.subCategory} onChange={handleChange} placeholder="e.g. Headphones" className={inputClasses} />
+          <select
+            name="subCategory"
+            value={form.subCategory}
+            onChange={handleChange}
+            disabled={!form.category}
+            className={`${inputClasses} disabled:cursor-not-allowed disabled:opacity-50`}
+          >
+            <option value="">
+              {form.category ? "Select sub category" : "Select category first"}
+            </option>
+            {subCategoryOptions.map((sub) => (
+              <option key={sub} value={sub} className="bg-[#0d0d12]">
+                {sub}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs font-semibold text-zinc-400">Price (৳ or $)</label>
+          <label className="mb-1.5 block text-xs font-semibold text-zinc-400">Price (৳)</label>
           <input type="number" name="price" value={form.price} onChange={handleChange} required placeholder="0.00" className={inputClasses} />
         </div>
 

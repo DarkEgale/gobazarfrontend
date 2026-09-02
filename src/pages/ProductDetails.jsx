@@ -370,15 +370,15 @@ const ProductDetails = () => {
               {/* Price */}
               <div className="mt-6 flex items-baseline gap-3">
                 <span className="text-4xl font-bold text-white">
-                  ${discountedPrice.toFixed(2)}
+                  ৳{discountedPrice.toFixed(2)}
                 </span>
                 {discount > 0 && (
                   <>
                     <span className="text-xl text-zinc-500 line-through">
-                      ${price.toFixed(2)}
+                      ৳{price.toFixed(2)}
                     </span>
                     <span className="rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-400">
-                      Save ${(price - discountedPrice).toFixed(2)}
+                      Save ৳{(price - discountedPrice).toFixed(2)}
                     </span>
                   </>
                 )}
@@ -393,7 +393,7 @@ const ProductDetails = () => {
                   <div>
                     <p className="text-xs font-semibold text-white">Delivery</p>
                     <p className="text-[11px] text-zinc-500">
-                      {delivary ? `$${delivary}` : "Free"} shipping
+                      {delivary ? `৳${delivary}` : "Free"} shipping
                     </p>
                   </div>
                 </div>

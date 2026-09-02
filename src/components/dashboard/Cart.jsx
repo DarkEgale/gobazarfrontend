@@ -106,11 +106,11 @@ const CartItem = memo(({ item, onUpdateQty, onRemove }) => {
           {/* Unit price */}
           <div>
             <p className="text-xs font-semibold text-violet-300">
-              ${unitPrice.toFixed(2)}
+              ৳{unitPrice.toFixed(2)}
             </p>
             {item.discount > 0 && (
               <p className="mt-0.5 text-[11px] text-zinc-600 line-through">
-                ${item.price.toFixed(2)}
+                ৳{item.price.toFixed(2)}
               </p>
             )}
           </div>
@@ -140,10 +140,10 @@ const CartItem = memo(({ item, onUpdateQty, onRemove }) => {
             </div>
 
             <p className="shrink-0 text-sm font-bold text-white">
-              ${lineTotal.toFixed(2)}
+              ৳{lineTotal.toFixed(2)}
               {lineTotal !== originalTotal && (
                 <span className="ml-1.5 text-[11px] font-medium text-zinc-600 line-through">
-                  ${originalTotal.toFixed(2)}
+                  ৳{originalTotal.toFixed(2)}
                 </span>
               )}
             </p>
@@ -364,7 +364,7 @@ const Cart = memo(() => {
             <div className="flex items-center justify-between text-sm">
               <span className="text-zinc-500">Subtotal</span>
               <span className="font-semibold text-white">
-                ${subtotal.toFixed(2)}
+                ৳{subtotal.toFixed(2)}
               </span>
             </div>
 
@@ -372,7 +372,7 @@ const Cart = memo(() => {
               <div className="flex items-center justify-between text-sm">
                 <span className="text-emerald-400">Discount savings</span>
                 <span className="font-semibold text-emerald-400">
-                  -${savings.toFixed(2)}
+                  -৳{savings.toFixed(2)}
                 </span>
               </div>
             )}
@@ -387,7 +387,7 @@ const Cart = memo(() => {
                   deliveryFee === 0 ? "text-emerald-400" : "text-white"
                 }`}
               >
-                {deliveryFee === 0 ? "Free" : `$${deliveryFee.toFixed(2)}`}
+                {deliveryFee === 0 ? "Free" : `৳${deliveryFee.toFixed(2)}`}
               </span>
             </div>
 
@@ -395,8 +395,8 @@ const Cart = memo(() => {
               <div className="flex items-start gap-1.5 rounded-lg bg-violet-500/[0.07] px-2.5 py-2 text-[11px] text-violet-300/80 ring-1 ring-violet-500/15">
                 <FiInfo size={12} className="mt-0.5 shrink-0" />
                 <span>
-                  Add ${(FREE_DELIVERY_THRESHOLD - subtotal).toFixed(2)} more to
-                  get free delivery (orders over ${FREE_DELIVERY_THRESHOLD})
+                  Add ৳{(FREE_DELIVERY_THRESHOLD - subtotal).toFixed(2)} more to
+                  get free delivery (orders over ৳{FREE_DELIVERY_THRESHOLD})
                 </span>
               </div>
             )}
@@ -405,7 +405,7 @@ const Cart = memo(() => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-white">Total</span>
                 <span className="text-lg font-bold text-white">
-                  ${total.toFixed(2)}
+                  ৳{total.toFixed(2)}
                 </span>
               </div>
             </div>

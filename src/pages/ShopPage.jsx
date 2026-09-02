@@ -193,7 +193,7 @@ const ShopPage = () => {
                       </h2>
 
                       <p className="text-sm text-zinc-300 sm:text-base">
-                        Premium quality · Best price · Free delivery over $50
+                        Premium quality · Best price · Free delivery over ৳2000
                       </p>
 
                       <div className="mt-1 flex flex-wrap items-center gap-4">
@@ -288,7 +288,7 @@ const ShopPage = () => {
           {/* ================= TRUST BADGES ================= */}
           <section className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
             {[
-              { icon: Truck, title: "Free Delivery", sub: "On orders over $50" },
+              { icon: Truck, title: "Free Delivery", sub: "On orders over ৳2000" },
               { icon: ShieldCheck, title: "Secure Payment", sub: "100% protected" },
               { icon: RotateCcw, title: "Easy Returns", sub: "7-day return policy" },
               { icon: Headphones, title: "24/7 Support", sub: "Dedicated service" },
@@ -342,9 +342,9 @@ const ShopPage = () => {
 
             {/* Fixed 500px slideshow container (width 100%) */}
             {trendingLoading ? (
-              <div className="grid h-[500px] max-h-[500px] w-full grid-cols-2 place-items-center gap-3 rounded-3xl border border-white/[0.06] bg-[#0d0d12] px-4 py-6 sm:grid-cols-4 sm:px-8">
+              <div className="grid h-[430px] max-h-[500px] w-full grid-cols-2 place-items-center gap-3 rounded-3xl border border-white/[0.06] bg-[#0d0d12] px-4 py-6 sm:h-[500px] sm:grid-cols-4 sm:px-8">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="w-[150px] sm:w-[180px]">
+                  <div key={i} className="w-full max-w-[180px]">
                     <div className="aspect-square animate-pulse rounded-2xl bg-white/[0.05]" />
                     <div className="mt-3 h-3 w-1/2 animate-pulse rounded bg-white/[0.05]" />
                     <div className="mt-2 h-3 w-3/4 animate-pulse rounded bg-white/[0.05]" />
@@ -352,7 +352,7 @@ const ShopPage = () => {
                 ))}
               </div>
             ) : trendingProducts.length > 0 ? (
-              <div className="relative h-[500px] max-h-[500px] w-full overflow-hidden rounded-3xl border border-white/[0.06] bg-[#0d0d12]">
+              <div className="relative h-[430px] max-h-[500px] w-full overflow-hidden rounded-3xl border border-white/[0.06] bg-[#0d0d12] sm:h-[500px]">
                 {/* Slides */}
                 <div
                   className="flex h-full transition-transform duration-700 ease-out"
@@ -364,7 +364,7 @@ const ShopPage = () => {
                       className="grid h-full w-full shrink-0 grid-cols-2 place-items-center gap-3 px-4 py-6 sm:grid-cols-4 sm:gap-5 sm:px-8"
                     >
                       {chunk.map((product) => (
-                        <div key={product._id} className="w-[150px] sm:w-[180px]">
+                        <div key={product._id} className="w-full max-w-[180px]">
                           <ProductCard product={product} compact />
                         </div>
                       ))}
@@ -557,8 +557,8 @@ const ShopPage = () => {
               </div>
             ) : (
               <>
-                {/* Product Grid */}
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+                {/* Product Grid — auto-responsive: columns fit automatically on every device */}
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(165px,1fr))] gap-4 sm:gap-5">
                   {products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}

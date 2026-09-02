@@ -70,7 +70,7 @@ const ProductCard = ({ product, compact = false }) => {
 
         {/* Discount Badge */}
         {discount > 0 && (
-          <div className="absolute left-3 top-3 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 px-2.5 py-1 text-xs font-bold text-white shadow-lg shadow-violet-600/30">
+          <div className="absolute left-3 top-3 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 px-2 py-0.5 text-[10px] font-bold text-white shadow-lg shadow-violet-600/30 sm:px-2.5 sm:py-1 sm:text-xs">
             -{discount}%
           </div>
         )}
@@ -99,10 +99,10 @@ const ProductCard = ({ product, compact = false }) => {
       </div>
 
       {/* Content */}
-      <div className={`flex flex-1 flex-col ${compact ? "p-2.5" : "p-4"}`}>
+      <div className={`flex flex-1 flex-col ${compact ? "p-2.5" : "p-3 sm:p-4"}`}>
         {/* Category */}
         <div className={`mb-1.5 flex items-center gap-2 ${compact ? "hidden" : ""}`}>
-          <span className="text-[11px] font-medium uppercase tracking-wider text-violet-400">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-violet-400 sm:text-[11px]">
             {category || "General"}
           </span>
 
@@ -118,7 +118,7 @@ const ProductCard = ({ product, compact = false }) => {
         {/* Title */}
         <h3
           className={`mb-2 line-clamp-2 font-semibold leading-snug text-white transition-colors group-hover:text-violet-300 ${
-            compact ? "text-xs" : "text-sm"
+            compact ? "text-xs" : "text-[13px] sm:text-sm"
           }`}
         >
           {title}
@@ -126,7 +126,7 @@ const ProductCard = ({ product, compact = false }) => {
 
         {/* Rating */}
         {!compact && (
-          <div className="mb-3 flex items-center gap-1.5">
+          <div className="mb-2 flex items-center gap-1.5 sm:mb-3">
             <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -153,15 +153,15 @@ const ProductCard = ({ product, compact = false }) => {
             <div className="flex items-baseline gap-2">
               <span
                 className={`font-bold text-white ${
-                  compact ? "text-sm" : "text-lg"
+                  compact ? "text-sm" : "text-base sm:text-lg"
                 }`}
               >
-                ${discountedPrice.toFixed(2)}
+                ৳{discountedPrice.toFixed(2)}
               </span>
 
               {discount > 0 && (
                 <span className="text-xs text-zinc-500 line-through">
-                  ${price.toFixed(2)}
+                  ৳{price.toFixed(2)}
                 </span>
               )}
             </div>
@@ -178,11 +178,11 @@ const ProductCard = ({ product, compact = false }) => {
             type="button"
             onClick={handleAddToCart}
             className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/25 transition-all duration-300 hover:scale-110 hover:shadow-violet-600/40 active:scale-95 ${
-              compact ? "h-7 w-7" : "h-9 w-9"
+              compact ? "h-7 w-7" : "h-8 w-8 sm:h-9 sm:w-9"
             }`}
             title="Add to cart"
           >
-            <ShoppingCart size={compact ? 13 : 16} />
+            <ShoppingCart size={compact ? 13 : 14} />
           </button>
         </div>
       </div>
