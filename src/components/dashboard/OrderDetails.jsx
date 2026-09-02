@@ -4,6 +4,7 @@ import {
   FiArrowLeft,
   FiPackage,
   FiMapPin,
+  FiPhone,
   FiTruck,
   FiCreditCard,
   FiAlertCircle,
@@ -226,6 +227,12 @@ const OrderDetails = memo(({ orderId, onBack }) => {
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
               {order.address || "No address provided"}
             </p>
+            {order.phone && (
+              <p className="mt-2 flex items-center gap-1.5 text-sm text-zinc-400">
+                <FiPhone size={12} />
+                {order.phone}
+              </p>
+            )}
           </div>
 
           {/* Payment + summary */}

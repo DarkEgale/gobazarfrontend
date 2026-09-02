@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { FiSearch, FiShoppingBag, FiEye } from "react-icons/fi";
+import { FiSearch, FiShoppingBag, FiEye, FiLoader } from "react-icons/fi";
 import { API_ENDPOINTS, getApiUrl } from "../../config/apiConfig";
 
 const STATUS_STYLES = {
@@ -21,6 +21,8 @@ const STATUS_LABELS = {
   cancelled: "Cancelled",
 };
 
+const STATUS_OPTIONS = ["pending", "shipping", "shipped", "on_the_way", "deliverd"];
+
 const PAYMENT_LABELS = {
   cash: "COD",
   bkash: "bKash",
@@ -28,11 +30,13 @@ const PAYMENT_LABELS = {
 };
 
 const ORDERS_API = `${getApiUrl(API_ENDPOINTS.ADMIN_ORDERS)}`;
+const UPDATE_STATUS_API = `${getApiUrl(API_ENDPOINTS.ADMIN_UPDATE_ORDER_STATUS)}`;
 
 const AdminOrders = memo(() => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [updatingId, setUpdatingId] = useState(null);
 
   // Fetch all orders (Admin) from backend
   const fetchOrders = useCallback(async () => {
@@ -43,6 +47,7 @@ const AdminOrders = memo(() => {
       });
       const raw = res.data?.data?.orders || [];
       const mapped = raw.map((order) => ({
+        _id: order._id,
         id: `#${String(order._id).slice(-6).toUpperCase()}`,
         customer: order.userId?.name || "Unknown User",
         email: order.userId?.email || "",
@@ -51,7 +56,8 @@ const AdminOrders = memo(() => {
             ?.map((p) => p.productId?.title || "Product")
             .join(", ") || "No products",
         amount: order.totalAmount || 0,
-        status: order.paymentStatus || "pending",
+        orderStatus: order.orderStatus || "pending",
+        paymentStatus: order.paymentStatus || "pending",
         date: order.createdAt
           ? new Date(order.createdAt).toISOString().slice(0, 10)
           : "",
@@ -72,6 +78,37 @@ const AdminOrders = memo(() => {
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+
+  // Update order status (Admin) — PATCH /api/order/status
+  const handleStatusChange = useCallback(
+    async (orderId, newStatus) => {
+      setUpdatingId(orderId);
+      try {
+        await axios.patch(
+          UPDATE_STATUS_API,
+          { orderId, orderStatus: newStatus },
+          { withCredentials: true },
+        );
+        setOrders((prev) =>
+          prev.map((o) =>
+            o._id === orderId ? { ...o, orderStatus: newStatus } : o,
+          ),
+        );
+      } catch (error) {
+        console.error(
+          "Update status error:",
+          error.response?.data?.message || error.message,
+        );
+        window.alert(
+          error.response?.data?.message || "Failed to update order status",
+        );
+        fetchOrders();
+      } finally {
+        setUpdatingId(null);
+      }
+    },
+    [fetchOrders],
+  );
 
   const filteredOrders = orders.filter(
     (o) =>
@@ -143,13 +180,28 @@ const AdminOrders = memo(() => {
                   {order.paymentStatus}
                 </td>
                 <td className="px-5 py-4">
-                  <span
-                    className={`rounded-lg px-2 py-1 text-[11px] font-semibold ring-1 ${STATUS_STYLES[order.status] || "bg-zinc-500/10 text-zinc-500 ring-zinc-500/20"}`}
-                  >
-                    {order.orderStatus
-                      ? STATUS_LABELS[order.orderStatus]
-                      : "Unknown"}
-                  </span>
+                  {updatingId === order._id ? (
+                    <span className="inline-flex items-center gap-2 text-xs text-zinc-500">
+                      <FiLoader size={14} className="animate-spin" />
+                      Updating...
+                    </span>
+                  ) : (
+                    <select
+                      value={order.orderStatus}
+                      onChange={(e) =>
+                        handleStatusChange(order._id, e.target.value)
+                      }
+                      disabled={updatingId === order._id}
+                      className={`cursor-pointer appearance-none rounded-lg px-2 py-1 text-[11px] font-semibold ring-1 outline-none transition focus:ring-2 focus:ring-violet-500/40 ${STATUS_STYLES[order.orderStatus] || "bg-zinc-500/10 text-zinc-500 ring-zinc-500/20"}`}
+                      aria-label={`Update status for order ${order.id}`}
+                    >
+                      {STATUS_OPTIONS.map((status) => (
+                        <option key={status} value={status}>
+                          {STATUS_LABELS[status]}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </td>
                 <td className="px-5 py-4 text-sm text-zinc-500">
                   {order.date}

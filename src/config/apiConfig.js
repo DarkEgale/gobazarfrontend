@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
     GET_ORDERS: '/api/order/my-orders',
     ORDER_DETAILS: '/api/order/details',
     ADMIN_ORDERS: '/api/order/all',
+    ADMIN_UPDATE_ORDER_STATUS: '/api/order/status',
 
     // USERS (Admin)
     ADMIN_USERS: '/api/users/all',

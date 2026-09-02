@@ -7,11 +7,11 @@ import { API_ENDPOINTS, getApiUrl } from '../../config/apiConfig';
 export const createOrder = createAsyncThunk(
     'order/create-order',
 
-    async ({ products, paymentMethod }, { rejectWithValue }) => {
+    async ({ products, paymentMethod, address, phone }, { rejectWithValue }) => {
         try {
             const response = await axios.post(
                 getApiUrl(API_ENDPOINTS.CREATE_ORDER),
-                { products, paymentMethod },
+                { products, paymentMethod, address, phone },
                 { withCredentials: true }
             );
 

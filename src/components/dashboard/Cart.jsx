@@ -14,6 +14,7 @@ import {
   FiCreditCard,
   FiInfo,
   FiMapPin,
+  FiPhone,
 } from "react-icons/fi";
 import { getApiUrl, API_ENDPOINTS } from "../../config/apiConfig";
 import {
@@ -162,6 +163,7 @@ const Cart = memo(() => {
   const [notice, setNotice] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleUpdateQty = useCallback(
     (id, quantity) => {
@@ -206,6 +208,19 @@ const Cart = memo(() => {
       return;
     }
 
+    /* User must enter a valid phone number (Bangladeshi mobile) */
+    if (!phone.trim()) {
+      setNotice({ type: "error", text: "Please enter your phone number" });
+      return;
+    }
+    if (!/^01[3-9]\d{8}$/.test(phone.trim())) {
+      setNotice({
+        type: "error",
+        text: "Please enter a valid 11-digit mobile number (e.g. 01712345678)",
+      });
+      return;
+    }
+
     /* User must select a payment method first */
     if (!paymentMethod) {
       setNotice({ type: "error", text: "Please select a payment method" });
@@ -237,6 +252,7 @@ const Cart = memo(() => {
           products,
           paymentMethod,
           address: address.trim(),
+          phone: phone.trim(),
         },
         {
           withCredentials: true,
@@ -413,6 +429,26 @@ const Cart = memo(() => {
             <p className="mt-1 text-right text-[11px] text-zinc-600">
               {address.length}/500
             </p>
+
+            {/* Phone number */}
+            <div className="mt-3">
+              <h4 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500">
+                <FiPhone size={12} />
+                Phone Number
+              </h4>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) =>
+                  setPhone(e.target.value.replace(/[^\d]/g, "").slice(0, 11))
+                }
+                disabled={isPlacing}
+                inputMode="numeric"
+                maxLength={11}
+                placeholder="01XXXXXXXXX — for delivery contact"
+                className="mt-2.5 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-3 text-sm text-white outline-none transition-all duration-200 placeholder:text-zinc-600 focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 disabled:opacity-60"
+              />
+            </div>
           </div>
 
           {/* Payment method (radio style) */}
